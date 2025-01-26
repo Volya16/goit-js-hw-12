@@ -1,9 +1,12 @@
+@import 'izitoast/dist/css/iziToast.min.css';
+@import "simplelightbox/dist/simple-lightbox.min.css";
 /**
   |============================
   | include css partials with
   | default @import url()
   |============================
 */
+/* Common styles */
 /* Common styles */
 @import url('./reset.css');
 @import url('./base.css');
@@ -16,3 +19,169 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+/* @import url('./form.css'); */
+
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: 38px;
+  color: #4e75ff;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-form {
+  margin-bottom: 32px;
+}
+
+.form-input {
+  border: 1px solid #808080;
+  border-radius: 4px;
+  width: 272px;
+  padding: 8px 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #808080;
+  background-color: transparent;
+  margin-right: 8px;
+}
+
+.form-input:hover {
+  border-color: #000;
+}
+
+.form-input:focus-within {
+  border-color: #4e75ff;
+  color: #2e2f42;
+}
+
+.search-btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 91px;
+  border: none;
+  background: #4e75ff;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+.search-btn:hover,
+.search-btn:focus {
+  background: #6c8cff;
+}
+
+.gallery {
+  display: flex; 
+  flex-direction: row;
+  flex-wrap: wrap; 
+  gap: 24px;
+}
+
+.gallery.is-visibly {
+  display: none;
+  /* opacity: 0; */
+}
+
+.gallery-card {
+  border: 1px solid #808080;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gallery-img {
+  width: 360px;
+}
+
+.description {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 8px;
+}
+
+.descriotion-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.33333;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+.descriotion-span {
+  font-weight: 400;
+font-size: 12px;
+line-height: 2;
+letter-spacing: 0.04em;
+color: #808080;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.loader-container.is-hidden {
+  display: none;
+}
+
+.loader {
+  width: 20px;
+  height: 12px;
+  display: block;
+  margin: auto;
+  position: relative;
+  border-radius: 4px;
+  color: gray;
+  background: currentColor;
+  box-sizing: border-box;
+  animation: animloader 0.6s 0.3s ease infinite alternate;
+}
+
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 20px;
+  height: 12px;
+  background: currentColor;
+  position: absolute;
+  border-radius: 4px;
+  top: 0;
+  right: 110%;
+  animation: animloader  0.6s ease infinite alternate;
+}
+.loader::after {
+  left: 110%;
+  right: auto;
+  animation-delay: 0.6s;
+}
+
+@keyframes animloader {
+  0% {
+    width: 20px;
+  }
+  100% {
+    width: 48px;
+  }
+}
