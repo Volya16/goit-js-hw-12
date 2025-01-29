@@ -1,4 +1,4 @@
-export const createGalleryCardTemplate = imgs => {
+export const createGalleryCardTemplate = img => {
   const {
     webformatURL,
     largeImageURL,
@@ -7,7 +7,9 @@ export const createGalleryCardTemplate = imgs => {
     views,
     comments,
     downloads,
-  } = imgs;
+  } = img;
+
+
 
   return `<li class="gallery-card">
             <a href=${largeImageURL} class="gallery-link">
