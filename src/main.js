@@ -29,28 +29,26 @@ const lightbox = new SimpleLightbox('.js-gallery a', {
 const onSeachFormSubmit = async evt => {
     try {
       evt.preventDefault();
-      
-      
 
         searchQuary = evt.currentTarget.elements.user_query.value.trim();
 
+    
         if (searchQuary === '') {
-            iziToast.warning({
+            iziToast.info({
               message: 'Please feel this field!',
             });
             return;
       }
       
-      page = 32;
+      page = 33;
       loadMoreBtn.classList.add('is-hidden');
       
       const {data} = await fetchPhotosByQuery(searchQuary, page);
       
-      
       if (data.total === 0) {
-        iziToast.error({
+        iziToast.info({
           message:
-          'Sorry, there are no images matching your search query. Please try again!',
+            'Sorry, there are no images matching your search query. Please try again!',
         });
         galleryEl.innerHTML = '';
         seachFormEl.reset();
@@ -58,59 +56,63 @@ const onSeachFormSubmit = async evt => {
       }
       
       totalPages = Math.ceil(data.totalHits / data.hits.length);
-      // console.log(totalPages);
+      loaderSwitcher(false);
       if (totalPages > 1) {
         loadMoreBtn.classList.remove('is-hidden');
-
         loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
       }
-
-      loaderSwitcher(false);
     
+      
       const galleryTemplate = data.hits.map(img => createGalleryCardTemplate(img)).join('');
-      loaderSwitcher(true);
-      galleryEl.innerHTML = galleryTemplate;
       lightbox.refresh();
-      galleryVisibly(true);
-      
+      loaderSwitcher(true);
 
-      
+      galleryVisibly(true);
+      galleryEl.innerHTML = galleryTemplate;
 
     } catch (err) {
         console.log(err);
     }
-    
+    finally {
+      // loadMoreBtn.classList.remove('is-hidden');
+    }
 };
 
 seachFormEl.addEventListener('submit', onSeachFormSubmit);
 
+
+
+
 const onLoadMoreBtnClick = async () => {
   try {
+    loadMoreBtn.classList.add('is-hidden');
+    loaderSwitcher(false);
     page++;
     const { data } = await fetchPhotosByQuery(searchQuary, page);
     const galleryTemplate = data.hits
       .map(img => createGalleryCardTemplate(img))
       .join('');
-    loaderSwitcher(true);
     galleryEl.insertAdjacentHTML('beforeend', galleryTemplate);
     lightbox.refresh();
-    galleryVisibly(true);
+    // galleryVisibly(true);
     loadMoreBtn.classList.remove('is-hidden');
 
-
     totalPages = Math.ceil(data.totalHits / data.hits.length);
-    console.log(totalPages);
-    console.log(page);
 
     if (page === totalPages) {
-      console.log(totalPages);
+      iziToast.info({
+        message:
+          "We're sorry, but you've reached the end of search results.",
+      });
       loadMoreBtn.classList.add('is-hidden');
       loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
     }
 
-
   } catch (error) {
     console.log(error);
+  }
+  finally {
+    loaderSwitcher(true);
   }
 };
 
