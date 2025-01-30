@@ -40,7 +40,7 @@ const onSeachFormSubmit = async evt => {
             return;
       }
       
-      page = 33;
+      page = 1;
       loadMoreBtn.classList.add('is-hidden');
       
       const {data} = await fetchPhotosByQuery(searchQuary, page);
@@ -54,6 +54,8 @@ const onSeachFormSubmit = async evt => {
         seachFormEl.reset();
         return;
       }
+
+      
       
       totalPages = Math.ceil(data.totalHits / data.hits.length);
       loaderSwitcher(false);
@@ -64,11 +66,12 @@ const onSeachFormSubmit = async evt => {
     
       
       const galleryTemplate = data.hits.map(img => createGalleryCardTemplate(img)).join('');
+      galleryEl.innerHTML = galleryTemplate;
       lightbox.refresh();
       loaderSwitcher(true);
 
       galleryVisibly(true);
-      galleryEl.innerHTML = galleryTemplate;
+      
 
     } catch (err) {
         console.log(err);
@@ -96,6 +99,15 @@ const onLoadMoreBtnClick = async () => {
     lightbox.refresh();
     // galleryVisibly(true);
     loadMoreBtn.classList.remove('is-hidden');
+    
+    const cardHeight = document
+      .querySelector('.gallery-card:last-child')
+      .getBoundingClientRect().height;
+    
+    scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
 
     totalPages = Math.ceil(data.totalHits / data.hits.length);
 
