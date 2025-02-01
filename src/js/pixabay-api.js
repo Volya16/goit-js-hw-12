@@ -14,7 +14,6 @@ export const fetchPhotosByQuery = (searchQuary, currentPage) => {
     },
   };
 
-
     return axios.get('https://pixabay.com/api/', axiosOptions);
     
 };

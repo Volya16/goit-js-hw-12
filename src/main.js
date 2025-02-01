@@ -9,6 +9,8 @@ const loaderEl = document.querySelector('.loader-container');
 const loadMoreBtn = document.querySelector('.load-btn-js');
 const seachFormEl = document.querySelector('.js-seach-form');
 
+
+loaderEl.style.display = 'none';
 let page = 1;
 let searchQuary = "";
 let totalPages = 0;
@@ -29,15 +31,18 @@ const lightbox = new SimpleLightbox('.js-gallery a', {
 const onSeachFormSubmit = async evt => {
     try {
       evt.preventDefault();
+      galleryEl.innerHTML = '';
+      loaderEl.style.display = 'block';
 
-        searchQuary = evt.currentTarget.elements.user_query.value.trim();
+      searchQuary = evt.currentTarget.elements.user_query.value.trim();
 
     
-        if (searchQuary === '') {
-            iziToast.info({
-              message: 'Please feel this field!',
-            });
-            return;
+      if (searchQuary === '') {
+        iziToast.info({
+          message: 'Please feel this field!',
+          });
+          loaderEl.style.display = 'none';
+          return;
       }
       
       page = 1;
@@ -45,6 +50,8 @@ const onSeachFormSubmit = async evt => {
       
       const {data} = await fetchPhotosByQuery(searchQuary, page);
       
+      loaderEl.style.display = 'none';
+
       if (data.total === 0) {
         iziToast.info({
           message:
@@ -54,50 +61,39 @@ const onSeachFormSubmit = async evt => {
         seachFormEl.reset();
         return;
       }
-
-      
       
       totalPages = Math.ceil(data.totalHits / data.hits.length);
-      loaderSwitcher(false);
+      
       if (totalPages > 1) {
         loadMoreBtn.classList.remove('is-hidden');
         loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
       }
     
-      
       const galleryTemplate = data.hits.map(img => createGalleryCardTemplate(img)).join('');
       galleryEl.innerHTML = galleryTemplate;
       lightbox.refresh();
-      loaderSwitcher(true);
-
-      galleryVisibly(true);
-      
 
     } catch (err) {
+      loaderEl.style.display = 'none';
         console.log(err);
-    }
-    finally {
-      // loadMoreBtn.classList.remove('is-hidden');
     }
 };
 
 seachFormEl.addEventListener('submit', onSeachFormSubmit);
 
 
-
-
 const onLoadMoreBtnClick = async () => {
   try {
     loadMoreBtn.classList.add('is-hidden');
-    loaderSwitcher(false);
     page++;
+    loaderEl.style.display = 'block';
     const { data } = await fetchPhotosByQuery(searchQuary, page);
+    loaderEl.style.display = 'none';
     const galleryTemplate = data.hits
       .map(img => createGalleryCardTemplate(img))
       .join('');
     galleryEl.insertAdjacentHTML('beforeend', galleryTemplate);
     lightbox.refresh();
-    // galleryVisibly(true);
     loadMoreBtn.classList.remove('is-hidden');
     
     const cardHeight = document
@@ -121,58 +117,7 @@ const onLoadMoreBtnClick = async () => {
     }
 
   } catch (error) {
+    loaderEl.style.display = 'none';
     console.log(error);
   }
-  finally {
-    loaderSwitcher(true);
-  }
 };
-
-
-function loaderSwitcher(boolean) {
-  if (boolean) {
-    setTimeout(() => {
-      loaderEl.classList.add('is-hidden');
-    }, 500);
-  } else {
-    loaderEl.classList.remove('is-hidden');
-  }
-}
-
-function galleryVisibly(boolean) {
-  if (boolean) {
-    galleryEl.classList.remove('is-visibly');
-  } else {
-    galleryEl.classList.add('is-visibly');
-  }
-  
-  
-  
-  
-  //   if (searchQuary === '') {
-  //     // loaderSwitcher(false);
-  //     setTimeout(() => {
-  //       iziToast.error({
-  //         message: 'Please feel this field!',
-  //       });
-  //     }, 500);
-  //     // seachFormEl.reset();
-  //     // loaderSwitcher(true);
-  //     return;
-  //   }
-  
-  //   galleryVisibly(true);
-  //   loaderSwitcher(false);
-  
-  //     .then(data => {
-  //       
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //       seachFormEl.reset();
-  //       loaderSwitcher(true);
-  //     });
-  //   galleryVisibly(false);
-}

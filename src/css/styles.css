@@ -92,11 +92,6 @@
   margin-bottom: 32px;
 }
 
-.gallery.is-visibly {
-  display: none;
-  /* opacity: 0; */
-}
-
 .gallery-card {
   border: 1px solid #808080;
   display: flex;
@@ -170,9 +165,9 @@ color: #808080;
   margin-bottom: 32px;
 }
 
-.loader-container.is-hidden {
+/* .loader-container.is-hidden {
   display: none;
-}
+} */
 
 .loader {
   width: 20px;
