@@ -45,7 +45,7 @@ const onSeachFormSubmit = async evt => {
           return;
       }
       
-      page = 1;
+      page = 33;
       loadMoreBtn.classList.add('is-hidden');
       
       const {data} = await fetchPhotosByQuery(searchQuary, page);
