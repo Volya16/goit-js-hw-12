@@ -63,12 +63,7 @@ const onSeachFormSubmit = async evt => {
       }
       
       totalPages = Math.ceil(data.totalHits / data.hits.length);
-      
-      if (totalPages > 1) {
-        loadMoreBtn.classList.remove('is-hidden');
-        loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
-      }
-    
+
       if (page === totalPages) {
         iziToast.info({
           message: "We're sorry, but you've reached the end of search results.",
@@ -76,6 +71,12 @@ const onSeachFormSubmit = async evt => {
         loadMoreBtn.classList.add('is-hidden');
         loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
       }
+      
+      if (totalPages > 1) {
+        loadMoreBtn.classList.remove('is-hidden');
+        loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+      }
+    
 
       const galleryTemplate = data.hits.map(img => createGalleryCardTemplate(img)).join('');
       galleryEl.innerHTML = galleryTemplate;
@@ -115,10 +116,13 @@ const onLoadMoreBtnClick = async () => {
 
     totalPages = Math.ceil(data.totalHits / data.hits.length);
 
-    if (page === totalPages) {
+    // console.log(`totalPages: ${totalPages}`);
+    // console.log(`page:${page}`);
+    // console.log(data.hits.length);
+
+    if (data.hits.length < 15 || page === totalPages) {
       iziToast.info({
-        message:
-          "We're sorry, but you've reached the end of search results.",
+        message: "We're sorry, but you've reached the end of search results.",
       });
       loadMoreBtn.classList.add('is-hidden');
       loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
